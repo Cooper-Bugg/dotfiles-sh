@@ -117,7 +117,7 @@ require("lazy").setup({
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         config = function()
-            require("nvim-treesitter.configs").setup({
+            require("nvim-treesitter").setup({
                 ensure_installed = { "c", "cpp", "lua", "python", "bash", "json", "yaml" },
                 highlight = { enable = true },
                 indent = { enable = true },
@@ -131,6 +131,7 @@ require("lazy").setup({
         dependencies = {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
+            "hrsh7th/cmp-nvim-lsp",
         },
         config = function()
             require("mason").setup()
@@ -138,13 +139,16 @@ require("lazy").setup({
                 ensure_installed = { "clangd", "lua_ls" },
             })
             local lsp = require("lspconfig")
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
             -- clangd for C/C++/Assembly
             lsp.clangd.setup({
+                capabilities = capabilities,
                 cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=never" },
                 filetypes = { "c", "cpp", "objc", "objcpp" },
             })
             -- Lua LSP
             lsp.lua_ls.setup({
+                capabilities = capabilities,
                 settings = { Lua = { diagnostics = { globals = { "vim" } } } }
             })
         end,
