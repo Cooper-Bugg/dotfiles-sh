@@ -1,0 +1,75 @@
+{
+    "layer": "top",
+    "position": "bottom",
+    "height": 34,
+    "spacing": 0,
+
+    "modules-left": ["custom/menu", "hyprland/workspaces"],
+    "modules-center": ["custom/clock"],
+    "modules-right": ["battery", "backlight", "pulseaudio", "network", "bluetooth", "tray"],
+
+    "custom/menu": {
+        "format": "  󰣇  ",
+        "on-click": "rofi -show drun -show-icons",
+        "tooltip": false
+    },
+
+    "hyprland/workspaces": {
+        "format": "{id}",
+        "on-click": "activate",
+        "sort-by-number": true
+    },
+
+    "custom/clock": {
+        "exec": "python ~/.config/waybar/scripts/weekly_hover.py",
+        "return-type": "json",
+        "interval": 1,
+        "on-click": "qalculate-gtk",
+        "tooltip": true
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+
+    "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "on-scroll-up": "brightnessctl set 5%+",
+        "on-scroll-down": "brightnessctl set 5%-"
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟 MUTE",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+
+    "network": {
+        "format-wifi": " {signalStrength}%",
+        "format-ethernet": "󰈀",
+        "format-disconnected": "󰤮",
+        "tooltip-text": "{ifname}: {ipaddr}"
+    },
+
+    "bluetooth": {
+        "format": "󰂯",
+        "format-connected": "󰂯 {device_alias}",
+        "format-disabled": "󰂲",
+        "on-click": "blueman-manager"
+    },
+
+    "tray": {
+        "spacing": 8
+    }
+}

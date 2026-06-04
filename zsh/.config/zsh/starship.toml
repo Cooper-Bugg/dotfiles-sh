@@ -1,0 +1,47 @@
+format = "$directory$git_branch$git_status$cmd_duration\n$character "
+
+[directory]
+style = "bold #5a9fd4"
+truncation_length = 3
+truncate_to_repo = true
+read_only = " RO"
+read_only_style = "bold #cc3333"
+
+[git_branch]
+format = "on [$branch]($style) "
+style = "bold #f0b429"
+symbol = " "
+
+[git_status]
+format = '[$all_status$ahead_behind]($style) '
+style = "bold #cc3333"
+conflicted = "!!"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "?"
+stashed = "s"
+modified = "~"
+staged = "+"
+deleted = "-"
+
+[character]
+success_symbol = "[❯](bold #5a9fd4)"
+error_symbol = "[❯](bold #cc3333)"
+vimcmd_symbol = "[❮](bold #f0b429)"
+
+[cmd_duration]
+format = "took [$duration]($style) "
+style = "bold #f0b429"
+min_time = 2000
+
+[username]
+style_user = "bold #f0b429"
+style_root = "bold #cc3333"
+format = "[$user]($style) "
+show_always = false
+
+[hostname]
+style = "bold #5a9fd4"
+format = "[@$hostname]($style) "
+ssh_only = true

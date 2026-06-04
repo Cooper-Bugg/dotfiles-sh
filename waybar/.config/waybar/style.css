@@ -1,0 +1,129 @@
+* {
+    font-family: "JetBrains Mono Nerd Font", monospace;
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: rgba(10, 13, 20, 0.95);
+    color: #e0e8f0;
+    border-top: 2px solid rgba(90, 159, 212, 0.6);
+}
+
+/* Workspaces */
+#workspaces button {
+    padding: 0 10px;
+    color: #4a6a8a;
+    background: transparent;
+    border-top: 2px solid transparent;
+}
+
+#workspaces button.active {
+    color: #5a9fd4;
+    border-top: 2px solid #5a9fd4;
+    background: rgba(90, 159, 212, 0.1);
+}
+
+#workspaces button.urgent {
+    color: #cc3333;
+    border-top: 2px solid #cc3333;
+}
+
+#workspaces button:hover {
+    background: rgba(90, 159, 212, 0.08);
+    color: #7ab8e0;
+}
+
+/* Clock -- gold */
+#clock {
+    color: #f0b429;
+    padding: 0 14px;
+    font-weight: bold;
+    border-left: 1px solid rgba(90, 159, 212, 0.3);
+    border-right: 1px solid rgba(90, 159, 212, 0.3);
+}
+
+/* Battery */
+#battery {
+    color: #5a9fd4;
+    padding: 0 8px;
+}
+
+#battery.warning {
+    color: #f0b429;
+}
+
+#battery.critical {
+    color: #cc3333;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#battery.charging {
+    color: #f0b429; /* Gold when charging */
+}
+
+/* Backlight */
+#backlight {
+    color: #8090b0;
+    padding: 0 8px;
+}
+
+/* Audio */
+#pulseaudio {
+    color: #5a9fd4;
+    padding: 0 8px;
+}
+
+#pulseaudio.muted {
+    color: #cc3333; /* Red when muted */
+}
+
+/* Network */
+#network {
+    color: #5a9fd4;
+    padding: 0 8px;
+}
+
+#network.disconnected {
+    color: #cc3333;
+}
+
+/* Bluetooth */
+#bluetooth {
+    color: #8090b0;
+    padding: 0 8px;
+}
+
+#bluetooth.connected {
+    color: #5a9fd4;
+}
+
+/* Tray */
+#tray {
+    padding: 0 8px;
+    border-left: 1px solid rgba(90, 159, 212, 0.2);
+}
+
+/* Custom menu/start button -- gold on dark */
+#custom-menu {
+    color: #f0b429;
+    background: rgba(240, 180, 41, 0.1);
+    padding: 0 14px;
+    border-right: 2px solid #f0b429;
+    font-weight: bold;
+}
+
+#custom-menu:hover {
+    background: rgba(240, 180, 41, 0.2);
+    color: #ffd166;
+}
+
+@keyframes blink {
+    to { color: #ff6666; }
+}

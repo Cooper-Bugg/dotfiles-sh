@@ -1,0 +1,22 @@
+#!/bin/bash
+# grimshot — broken-screen region screenshot → swappy for drawing
+
+SAVE_DIR="$HOME/media/images/screenshots"
+SHADER="$HOME/.config/hypr/shaders/broken.glsl"
+
+# Apply broken screen shader
+hyprctl keyword decoration:screen_shader "$SHADER" >/dev/null 2>&1
+sleep 0.15
+
+# Region select with cyberpunk slurp overlay
+# dark overlay, red selection border, faint white fill
+REGION=$(slurp -b 0a0d1288 -c ff003399 -s ffffff0a -B ff0033ff -d 2>/dev/null)
+
+# Clear shader immediately after selection
+hyprctl keyword decoration:screen_shader '[[EMPTY]]' >/dev/null 2>&1
+
+# Bail if user cancelled (Escape)
+[ -z "$REGION" ] && exit 0
+
+# Capture and open in swappy for annotation/drawing
+grim -g "$REGION" - | swappy -f -

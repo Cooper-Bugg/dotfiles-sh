@@ -1,0 +1,106 @@
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    "logo": {
+        "source": "/home/cooper/.config/ascii/arch-rainbow.txt",
+        "type": "file",
+        "padding": {
+            "top": 2,
+            "left": 2,
+            "right": 2
+        }
+    },
+    "display": {
+        "separator": "  \u001b[38;2;90;159;212m┃\u001b[0m  ",
+        "color": {
+            "keys": "38;2;112;165;219",
+            "title": "38;2;0;215;255"
+        }
+    },
+    "modules": [
+        {
+            "type": "title",
+            "format": "\u001b[38;2;0;215;255m{user-name}\u001b[38;2;90;159;212m@\u001b[38;2;112;165;219m{host-name}\u001b[0m"
+        },
+        "separator",
+        {
+            "type": "os",
+            "key": "\u001b[38;2;112;165;219m  OS\u001b[0m",
+            "format": "{name} {version} ({arch})"
+        },
+        {
+            "type": "kernel",
+            "key": "\u001b[38;2;112;165;219m  Kernel\u001b[0m"
+        },
+        {
+            "type": "uptime",
+            "key": "\u001b[38;2;112;165;219m  Uptime\u001b[0m"
+        },
+        {
+            "type": "packages",
+            "key": "\u001b[38;2;112;165;219m  Packages\u001b[0m"
+        },
+        "separator",
+        {
+            "type": "shell",
+            "key": "\u001b[38;2;212;175;55m  Shell\u001b[0m"
+        },
+        {
+            "type": "terminal",
+            "key": "\u001b[38;2;212;175;55m  Terminal\u001b[0m"
+        },
+        {
+            "type": "wm",
+            "key": "\u001b[38;2;212;175;55m  WM\u001b[0m"
+        },
+        {
+            "type": "display",
+            "key": "\u001b[38;2;212;175;55m  Resolution\u001b[0m",
+            "format": "{width}x{height} @ {refresh-rate}Hz"
+        },
+        "separator",
+        {
+            "type": "cpu",
+            "key": "\u001b[38;2;200;80;80m  CPU\u001b[0m",
+            "format": "{1} ({4}C/{5}T) @ {7}"
+        },
+        {
+            "type": "gpu",
+            "key": "\u001b[38;2;200;80;80m  GPU\u001b[0m",
+            "format": "{2} [{6}]"
+        },
+        {
+            "type": "memory",
+            "key": "\u001b[38;2;200;80;80m  RAM\u001b[0m",
+            "format": "{1} / {2} ({3})"
+        },
+        {
+            "type": "disk",
+            "key": "\u001b[38;2;200;80;80m  Disk (/)\u001b[0m",
+            "folders": "/",
+            "format": "{2} / {1} ({3}) [{9}]"
+        },
+        "separator",
+        {
+            "type": "command",
+            "key": "\u001b[38;2;90;159;212m  Date\u001b[0m",
+            "shell": "bash",
+            "text": "date '+%B %d, %Y  %I:%M:%S %p'"
+        },
+        "separator",
+        {
+            "type": "custom",
+            "key": "\u001b[38;2;212;175;55m  Commands\u001b[0m",
+            "format": "\u001b[38;2;90;159;212mls\u001b[0m/\u001b[38;2;90;159;212mll\u001b[0m (eza)  \u001b[38;2;90;159;212mcat\u001b[0m (bat)  \u001b[38;2;90;159;212mgrep\u001b[0m (rg)"
+        },
+        {
+            "type": "custom",
+            "key": "\u001b[38;2;212;175;55m          \u001b[0m",
+            "format": "\u001b[38;2;90;159;212mpacup\u001b[0m (sync) \u001b[38;2;90;159;212myayin\u001b[0m (AUR) \u001b[38;2;90;159;212mv\u001b[0m (vim)"
+        },
+        {
+            "type": "custom",
+            "key": "\u001b[38;2;212;175;55m          \u001b[0m",
+            "format": "\u001b[38;2;90;159;212mhyprconf\u001b[0m     \u001b[38;2;90;159;212mzshconf\u001b[0m      \u001b[38;2;90;159;212maliasconf\u001b[0m"
+        }
+    ]
+}
