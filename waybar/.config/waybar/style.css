@@ -64,8 +64,28 @@ window#waybar {
     animation-direction: alternate;
 }
 
-#battery.charging {
-    color: #f0b429; /* Gold when charging */
+#battery.charging,
+#battery.plugged {
+    color: #52cc7a;
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+@keyframes pulse {
+    0% {
+        color: #52cc7a;
+        text-shadow: 0 0 0px #52cc7a;
+    }
+    50% {
+        color: #70ff9a;
+        text-shadow: 0 0 8px #52cc7a;
+    }
+    100% {
+        color: #52cc7a;
+        text-shadow: 0 0 0px #52cc7a;
+    }
 }
 
 /* Backlight */
@@ -109,6 +129,19 @@ window#waybar {
     padding: 0 8px;
     border-left: 1px solid rgba(90, 159, 212, 0.2);
 }
+
+/* Theme toggle */
+#custom-theme {
+    padding: 0 10px;
+    color: #8090b0;
+    font-size: 13px;
+    border-left: 1px solid rgba(90, 159, 212, 0.2);
+}
+
+#custom-theme.light { color: #f0b429; }
+#custom-theme.dark  { color: #5a9fd4; }
+
+#custom-theme:hover { color: #e0e8f0; }
 
 /* Custom menu/start button -- gold on dark */
 #custom-menu {

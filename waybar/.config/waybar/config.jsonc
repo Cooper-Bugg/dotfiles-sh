@@ -6,7 +6,7 @@
 
     "modules-left": ["custom/menu", "hyprland/workspaces"],
     "modules-center": ["custom/clock"],
-    "modules-right": ["battery", "backlight", "pulseaudio", "network", "bluetooth", "tray"],
+    "modules-right": ["custom/theme", "battery", "backlight", "pulseaudio", "network", "bluetooth", "tray"],
 
     "custom/menu": {
         "format": "  󰣇  ",
@@ -24,7 +24,8 @@
         "exec": "python ~/.config/waybar/scripts/weekly_hover.py",
         "return-type": "json",
         "interval": 1,
-        "on-click": "qalculate-gtk",
+        "on-click": "gsimplecal",
+        "on-click-right": "kitty -e nvim ~/ai_agent_md/weekly/",
         "tooltip": true
     },
 
@@ -67,6 +68,14 @@
         "format-connected": "󰂯 {device_alias}",
         "format-disabled": "󰂲",
         "on-click": "blueman-manager"
+    },
+
+    "custom/theme": {
+        "exec": "~/.config/waybar/scripts/theme_mode.sh",
+        "return-type": "json",
+        "interval": 2,
+        "on-click": "bash -c 'MODE=$(cat ~/.local/share/theme-mode 2>/dev/null || echo dark); [[ $MODE == light ]] && theme-switch dark || theme-switch light'",
+        "tooltip": true
     },
 
     "tray": {

@@ -21,6 +21,8 @@ hl.env("HYPRCURSOR_SIZE", "24")
 hl.env("QT_QPA_PLATFORM", "wayland")
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 hl.env("MOZ_ENABLE_WAYLAND", "1")
+hl.env("GTK_THEME", "Adwaita")
+hl.env("GSETTINGS_SCHEMA_DIR", "/usr/share/glib-2.0/schemas")
 
 -- --- AUTOSTART ---
 hl.on("hyprland.start", function()
@@ -31,6 +33,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("awww-daemon")
     hl.exec_cmd("hypridle")
     hl.exec_cmd("sh -c 'sleep 1 && /home/cooper/.local/bin/apply-wallpaper.sh'")
+    hl.exec_cmd("sh -c 'sleep 2 && ollama serve'")
 end)
 
 -- --- INPUT CONFIGURATION ---
@@ -144,6 +147,15 @@ hl.bind(mainModShift .. " + Escape", hl.dsp.exec_cmd("hyprlock"))
 
 -- Screenshots
 -- Print       → full screen, saved directly
--- Super+Print → broken-screen select region → swappy to draw/annotate
+-- Super+Shift+Print → region select (grim + slurp)
 hl.bind("Print", hl.dsp.exec_cmd("grim ~/media/images/screenshots/$(date +%Y%m%d-%H%M%S).png"))
-hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd("grimshot"))
+hl.bind(mainModShift .. " + Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" ~/media/images/screenshots/$(date +%Y%m%d-%H%M%S).png"))
+hl.bind("Alt_R + Print", hl.dsp.exec_cmd("moondream-ask"))
+
+-- Global theme toggle (light/dark)
+hl.bind(mainModShift .. " + F5", hl.dsp.exec_cmd("theme-switch light"))
+hl.bind(mainMod .. " + F5", hl.dsp.exec_cmd("theme-switch dark"))
+
+-- Wallpaper controls
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("wallpaper-random"))
+hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("wallpaper-back"))

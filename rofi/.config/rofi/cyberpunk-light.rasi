@@ -1,0 +1,123 @@
+/* Rofi Cyberpunk Light -- blue/gold/red on near-white */
+
+* {
+    bg-col:         #f4f7fc;
+    bg-col-light:   #eaeff8;
+    border-col:     #1a8cc4;
+    selected-col:   #dce4f2;
+    gold:           #c49000;
+    red:            #d42020;
+    fg-col:         #0d1020;
+    fg-col2:        #5a6a80;
+    grey:           #b0c0d8;
+
+    width: 600;
+    font: "JetBrains Mono 12";
+}
+
+element-text, element-icon, mode-switcher {
+    background-color: inherit;
+    text-color: inherit;
+}
+
+window {
+    height: 400px;
+    border: 2px;
+    border-color: @border-col;
+    border-radius: 0px;
+    background-color: @bg-col;
+}
+
+mainbox {
+    background-color: @bg-col;
+}
+
+inputbar {
+    children: [prompt, entry];
+    background-color: @bg-col;
+    border-radius: 0px;
+    padding: 6px;
+    border-bottom: 2px;
+    border-color: @border-col;
+}
+
+prompt {
+    background-color: @gold;
+    padding: 4px 8px;
+    text-color: @bg-col;
+    border-radius: 0px;
+    margin: 0 8px 0 0;
+}
+
+textbox-prompt-colon {
+    expand: false;
+    str: ":";
+}
+
+entry {
+    padding: 4px;
+    text-color: @fg-col;
+    background-color: @bg-col;
+}
+
+listview {
+    border: 0;
+    padding: 6px;
+    margin: 0;
+    columns: 1;
+    background-color: @bg-col;
+}
+
+element {
+    padding: 6px 12px;
+    background-color: @bg-col;
+    text-color: @fg-col;
+    border-radius: 0px;
+}
+
+element-icon {
+    size: 18px;
+    padding: 0 8px 0 0;
+}
+
+element selected {
+    background-color: @selected-col;
+    text-color: @fg-col;
+    border-left: 3px;
+    border-color: @gold;
+}
+
+element-text {
+    text-color: inherit;
+}
+
+mode-switcher {
+    spacing: 0;
+    border-top: 2px;
+    border-color: @grey;
+}
+
+button {
+    padding: 6px;
+    background-color: @bg-col-light;
+    text-color: @fg-col2;
+    border-radius: 0px;
+}
+
+button selected {
+    background-color: @selected-col;
+    text-color: @gold;
+}
+
+message {
+    background-color: @bg-col-light;
+    border: 2px;
+    border-color: @red;
+    margin: 6px;
+    padding: 6px;
+}
+
+textbox {
+    text-color: @red;
+    background-color: @bg-col-light;
+}
