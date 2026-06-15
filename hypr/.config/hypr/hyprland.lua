@@ -15,13 +15,34 @@ hl.monitor({
     scale = 1.25
 })
 
+-- Pin external monitor above laptop screen
+hl.monitor({
+    output = "HDMI-A-2",
+    mode = "1920x1080@60",
+    position = "0x-1080",
+    scale = 1.0
+})
+
+-- --- WORKSPACE RULES ---
+-- Pin workspaces 1-2 to external monitor, 3-9 to laptop screen
+hl.workspace_rule({ workspace = "1", monitor = "HDMI-A-2" })
+hl.workspace_rule({ workspace = "2", monitor = "HDMI-A-2" })
+hl.workspace_rule({ workspace = "3", monitor = "eDP-1" })
+hl.workspace_rule({ workspace = "4", monitor = "eDP-1" })
+hl.workspace_rule({ workspace = "5", monitor = "eDP-1" })
+hl.workspace_rule({ workspace = "6", monitor = "eDP-1" })
+hl.workspace_rule({ workspace = "7", monitor = "eDP-1" })
+hl.workspace_rule({ workspace = "8", monitor = "eDP-1" })
+hl.workspace_rule({ workspace = "9", monitor = "eDP-1" })
+
+
 -- --- ENVIRONMENT VARIABLES ---
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 hl.env("QT_QPA_PLATFORM", "wayland")
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 hl.env("MOZ_ENABLE_WAYLAND", "1")
-hl.env("GTK_THEME", "Adwaita")
+hl.env("GTK_THEME", "Adwaita:dark")
 hl.env("GSETTINGS_SCHEMA_DIR", "/usr/share/glib-2.0/schemas")
 
 -- --- AUTOSTART ---
@@ -67,7 +88,7 @@ hl.config({
     decoration = {
         rounding = 8,
         active_opacity = 1.0,
-        inactive_opacity = 0.6,
+        inactive_opacity = 0.4,
         blur = {
             enabled = false
         },
@@ -84,7 +105,21 @@ hl.config({
     windowrulev2 = {
         "float, class:^(fastfetch-popup)$",
         "size 700 500, class:^(fastfetch-popup)$",
-        "center, class:^(fastfetch-popup)$"
+        "center, class:^(fastfetch-popup)$",
+        "opacity 1.0 override 1.0 override, class:^(code-oss)$",
+        
+        -- Inactive opacity rules for external monitor (Workspaces 1-2)
+        "opacity 1.0 0.2, workspace:1",
+        "opacity 1.0 0.2, workspace:2",
+
+        -- Inactive opacity rules for laptop monitor (Workspaces 3-9)
+        "opacity 1.0 0.6, workspace:3",
+        "opacity 1.0 0.6, workspace:4",
+        "opacity 1.0 0.6, workspace:5",
+        "opacity 1.0 0.6, workspace:6",
+        "opacity 1.0 0.6, workspace:7",
+        "opacity 1.0 0.6, workspace:8",
+        "opacity 1.0 0.6, workspace:9"
     }
 })
 
@@ -148,13 +183,17 @@ hl.bind(mainModShift .. " + Escape", hl.dsp.exec_cmd("hyprlock"))
 -- Screenshots
 -- Print       → full screen, saved directly
 -- Super+Shift+Print → region select (grim + slurp)
+-- Super+Shift+S     → region select (standard shortcut)
 hl.bind("Print", hl.dsp.exec_cmd("grim ~/media/images/screenshots/$(date +%Y%m%d-%H%M%S).png"))
 hl.bind(mainModShift .. " + Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" ~/media/images/screenshots/$(date +%Y%m%d-%H%M%S).png"))
+hl.bind(mainModShift .. " + S", hl.dsp.exec_cmd("grim -g \"$(slurp)\" ~/media/images/screenshots/$(date +%Y%m%d-%H%M%S).png"))
 hl.bind("Alt_R + Print", hl.dsp.exec_cmd("moondream-ask"))
 
 -- Global theme toggle (light/dark)
-hl.bind(mainModShift .. " + F5", hl.dsp.exec_cmd("theme-switch light"))
-hl.bind(mainMod .. " + F5", hl.dsp.exec_cmd("theme-switch dark"))
+-- We bind both Super+F5 and Super+XF86MonBrightnessDown to work regardless of Fn-Lock status
+hl.bind(mainMod .. " + F5", hl.dsp.exec_cmd("/home/cooper/.local/bin/theme-toggle"))
+hl.bind(mainMod .. " + XF86MonBrightnessDown", hl.dsp.exec_cmd("/home/cooper/.local/bin/theme-toggle"))
+
 
 -- Wallpaper controls
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("wallpaper-random"))

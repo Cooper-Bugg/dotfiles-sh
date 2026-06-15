@@ -6,7 +6,7 @@
 
     "modules-left": ["custom/menu", "hyprland/workspaces"],
     "modules-center": ["custom/clock"],
-    "modules-right": ["custom/theme", "battery", "backlight", "pulseaudio", "network", "bluetooth", "tray"],
+    "modules-right": ["custom/theme", "custom/wallpaper-lock", "custom/wallpaper-match", "battery", "backlight", "pulseaudio", "network", "bluetooth", "tray"],
 
     "custom/menu": {
         "format": "  󰣇  ",
@@ -23,9 +23,9 @@
     "custom/clock": {
         "exec": "python ~/.config/waybar/scripts/weekly_hover.py",
         "return-type": "json",
-        "interval": 1,
+        "interval": 60,
         "on-click": "gsimplecal",
-        "on-click-right": "kitty -e nvim ~/ai_agent_md/weekly/",
+        "on-click-right": "kitty -e bvim ~/docs/md/todo.md",
         "tooltip": true
     },
 
@@ -73,10 +73,28 @@
     "custom/theme": {
         "exec": "~/.config/waybar/scripts/theme_mode.sh",
         "return-type": "json",
-        "interval": 2,
+        "interval": "once",
+        "signal": 3,
         "on-click": "bash -c 'MODE=$(cat ~/.local/share/theme-mode 2>/dev/null || echo dark); [[ $MODE == light ]] && theme-switch dark || theme-switch light'",
         "tooltip": true
     },
+
+    "custom/wallpaper-lock": {
+        "exec": "~/.config/waybar/scripts/wallpaper_lock_status.sh",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 2,
+        "on-click": "wallpaper-lock",
+        "tooltip": true
+    },
+
+    "custom/wallpaper-match": {
+        "format": "󰑐",
+        "on-click": "wallpaper-match",
+        "tooltip-text": "Sync secondary wallpaper to primary (t480s)",
+        "tooltip": true
+    },
+
 
     "tray": {
         "spacing": 8

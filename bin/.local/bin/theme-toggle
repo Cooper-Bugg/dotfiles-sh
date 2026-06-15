@@ -1,0 +1,9 @@
+#!/bin/bash
+STATE_FILE="$HOME/.local/share/theme-mode"
+MODE=$(cat "$STATE_FILE" 2>/dev/null || echo dark)
+
+if [[ "$MODE" == "light" ]]; then
+    /home/cooper/.local/bin/theme-switch dark
+else
+    /home/cooper/.local/bin/theme-switch light
+fi

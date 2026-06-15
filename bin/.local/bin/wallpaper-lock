@@ -1,0 +1,29 @@
+#!/bin/bash
+# wallpaper-lock: Toggles the locked state of the wallpapers
+
+LOCK_FILE="$HOME/.cache/wallpaper-locked"
+STATE_FILE="$HOME/.cache/wallpaper-lock-state"
+
+if [[ -f "$LOCK_FILE" ]]; then
+    rm -f "$LOCK_FILE" "$STATE_FILE"
+    notify-send "Wallpaper System" "Wallpapers unlocked" -i preferences-desktop-wallpaper
+    echo "Wallpapers unlocked."
+else
+    # Clear state file
+    > "$STATE_FILE"
+    # Save the current state of each monitor's wallpaper
+    awww query | while read -r line; do
+        mon=$(echo "$line" | awk -F':' '{print $2}' | tr -d ' ')
+        wall=$(echo "$line" | sed -n 's/.*image: //p')
+        if [[ -n "$mon" && -n "$wall" ]]; then
+            echo "$mon:$wall" >> "$STATE_FILE"
+        fi
+    done
+    touch "$LOCK_FILE"
+    notify-send "Wallpaper System" "Wallpapers locked" -i preferences-desktop-wallpaper
+    echo "Wallpapers locked."
+fi
+
+# Signal Waybar to refresh wallpaper-lock module
+pkill -RTMIN+2 waybar
+

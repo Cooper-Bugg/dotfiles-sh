@@ -1,0 +1,23 @@
+#!/bin/bash
+# region screenshot → moondream → notify
+
+PROMPT="${1:-Describe what you see in detail. If there is code, explain what it does.}"
+TMP="/tmp/moondream_shot.png"
+
+REGION=$(slurp -b 0a0d1288 -c ff003399 -s ffffff0a -B ff0033ff -d 2>/dev/null)
+[ -z "$REGION" ] && exit 0
+
+grim -g "$REGION" "$TMP" || exit 1
+
+notify-send "Moondream" "Analyzing..." -t 2000
+
+RESPONSE=$(curl -s http://localhost:11434/api/generate \
+  -d "{
+    \"model\": \"moondream\",
+    \"prompt\": $(echo "$PROMPT" | jq -Rs .),
+    \"images\": [\"$(base64 -w 0 "$TMP")\"],
+    \"stream\": false
+  }" | jq -r '.response // "No response"')
+
+notify-send "Moondream" "$RESPONSE" -t 15000
+echo "$RESPONSE" | wl-copy

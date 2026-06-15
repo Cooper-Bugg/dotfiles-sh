@@ -1,0 +1,38 @@
+#!/bin/bash
+# wallpaper-match: Matches the wallpaper of secondary monitor(s) to the primary monitor (eDP-1)
+
+PRIMARY_MON="eDP-1"
+PRIMARY_WALL=$(awww query | grep "$PRIMARY_MON" | grep -oP 'image: \K.*')
+
+if [[ -n "$PRIMARY_WALL" && -f "$PRIMARY_WALL" ]]; then
+    # Get all connected monitors other than eDP-1
+    OTHER_MONITORS=$(awww query | awk -F':' '{print $2}' | tr -d ' ' | grep -v "$PRIMARY_MON")
+    for mon in $OTHER_MONITORS; do
+        awww img -o "$mon" "$PRIMARY_WALL"
+    done
+    
+    # Update cache
+    echo "$PRIMARY_WALL" > "$HOME/.cache/current-wallpaper"
+    echo "$PRIMARY_WALL" > "$HOME/.cache/next-wallpaper"
+    
+    # If the wallpapers are locked, we also want to update the lock state file so the matched state persists
+    LOCK_FILE="$HOME/.cache/wallpaper-locked"
+    STATE_FILE="$HOME/.cache/wallpaper-lock-state"
+    if [[ -f "$LOCK_FILE" ]]; then
+        > "$STATE_FILE"
+        awww query | while read -r line; do
+            mon=$(echo "$line" | awk -F':' '{print $2}' | tr -d ' ')
+            wall=$(echo "$line" | sed -n 's/.*image: //p')
+            if [[ -n "$mon" && -n "$wall" ]]; then
+                echo "$mon:$wall" >> "$STATE_FILE"
+            fi
+        done
+    fi
+
+    notify-send "Wallpaper System" "Matched secondary monitor wallpaper to primary" -i preferences-desktop-wallpaper
+    echo "Matched secondary monitor(s) to $PRIMARY_WALL"
+else
+    notify-send "Wallpaper System" "Error: Could not retrieve primary wallpaper" -i dialog-error
+    echo "Error: Could not retrieve primary wallpaper."
+    exit 1
+fi

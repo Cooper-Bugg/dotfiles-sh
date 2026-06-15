@@ -1,0 +1,32 @@
+#!/bin/bash
+if [[ -f "$HOME/.cache/wallpaper-locked" ]]; then
+    notify-send "Wallpaper System" "Wallpapers are locked! Unlock first." -i dialog-warning
+    echo "Wallpapers are locked. Unlock to change."
+    exit 0
+fi
+
+DIR="$HOME/media/images/wallpapers"
+cp "$HOME/.cache/current-wallpaper" "$HOME/.cache/prev-wallpaper" 2>/dev/null
+
+
+# Get all connected monitors
+MONITORS=$(awww query | awk -F':' '{print $2}' | tr -d ' ')
+
+first=true
+for mon in $MONITORS; do
+    if [ "$first" = true ]; then
+        WALL=$(find "$DIR" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \) | shuf -n1)
+        awww img -o "$mon" "$WALL"
+        echo "$WALL" > "$HOME/.cache/current-wallpaper"
+        echo "$WALL" > "$HOME/.cache/next-wallpaper"
+        primary_wall="$WALL"
+        first=false
+    else
+        # Select a random wallpaper different from the primary one
+        OTHER_WALL=$(find "$DIR" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \) | grep -v "$primary_wall" | shuf -n1)
+        if [ -n "$OTHER_WALL" ]; then
+            awww img -o "$mon" "$OTHER_WALL"
+        fi
+    fi
+done
+

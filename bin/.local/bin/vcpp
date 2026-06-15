@@ -1,0 +1,13 @@
+#!/bin/bash
+# vcpp: Cooper's C++ IDE Mode
+# Launches bvim with a vertical split terminal on the right
+
+FILE=$1
+
+if [ -z "$FILE" ]; then
+    # If no file, just launch nvim
+    nvim -c "vsplit | terminal"
+else
+    # Launch with file on left, terminal on right
+    nvim "$FILE" -c "vsplit | terminal" -c "vertical resize 60" -c "wincmd h"
+fi

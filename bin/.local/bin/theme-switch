@@ -1,0 +1,56 @@
+#!/bin/bash
+MODE=$1
+KITTY_CFG="$HOME/.config/kitty"
+ROFI_CFG="$HOME/.config/rofi"
+TB_CHROME="$HOME/.thunderbird/izrhhews.default-release/chrome"
+STATE_FILE="$HOME/.local/share/theme-mode"
+UID_RUN="/run/user/$UID"
+
+case "$MODE" in
+  light)
+    cp "$KITTY_CFG/colors-light.conf"    "$KITTY_CFG/current-colors.conf"
+    cp "$ROFI_CFG/cyberpunk-light.rasi"  "$ROFI_CFG/cyberpunk.rasi"
+    cp "$TB_CHROME/userChrome-light.css" "$TB_CHROME/userChrome.css"
+    hyprctl eval 'hl.config({general={["col.active_border"]="rgba(1a8cc4ff)",["col.inactive_border"]="rgba(b0c0d8a8)"}})'
+    NVIM_SCHEME="kanagawa-lotus"
+    ;;
+  dark)
+    cp "$KITTY_CFG/colors-dark.conf"    "$KITTY_CFG/current-colors.conf"
+    cp "$ROFI_CFG/cyberpunk-dark.rasi"  "$ROFI_CFG/cyberpunk.rasi"
+    cp "$TB_CHROME/userChrome-dark.css" "$TB_CHROME/userChrome.css"
+    hyprctl eval 'hl.config({general={["col.active_border"]="rgba(5a9fd4ff)",["col.inactive_border"]="rgba(2d3550a8)"}})'
+    NVIM_SCHEME="kanagawa-wave"
+    ;;
+  *)
+    echo "Usage: theme-switch light|dark"
+    exit 1
+    ;;
+esac
+
+# Write state file (for Waybar indicator)
+echo "$MODE" > "$STATE_FILE"
+
+# Reload colors in all running kitty instances
+for pid in $(pgrep -x kitty); do
+    kitty @ --to "unix:/proc/$pid/fd/0" set-colors --all "$KITTY_CFG/current-colors.conf" 2>/dev/null \
+    || kill -SIGUSR1 "$pid" 2>/dev/null
+done
+
+# Switch colorscheme in all running Neovim instances
+for socket in "$UID_RUN"/nvim.*.0 /tmp/nvim.*.0; do
+    [[ -S "$socket" ]] && nvim --server "$socket" \
+        --remote-send "<Esc>:colorscheme $NVIM_SCHEME<CR>" 2>/dev/null
+done
+
+# Restart Thunderbird only if it was already running
+if pgrep -x thunderbird > /dev/null; then
+    pkill -x thunderbird
+    sleep 0.5
+    thunderbird &
+fi
+
+# Signal Waybar to refresh custom/theme module
+pkill -RTMIN+3 waybar
+
+notify-send "Theme" "Switched to $MODE mode" -t 2000
+

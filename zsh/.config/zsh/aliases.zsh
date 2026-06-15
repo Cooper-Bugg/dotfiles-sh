@@ -27,7 +27,7 @@ alias gl='git log --oneline --graph'
 
 # editor
 alias v='nvim'
-alias vcpp='nvim +Neotree'
+alias bvim='nvim'
 
 # system shortcuts
 alias pacup='sudo pacman -Syu'

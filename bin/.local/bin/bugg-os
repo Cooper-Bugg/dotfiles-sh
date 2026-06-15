@@ -1,0 +1,162 @@
+#!/usr/bin/env python3
+import os
+import subprocess
+import glob
+import sys
+
+# Paths
+MD_DIR = os.path.expanduser("~/docs/md/ai_agents")
+MODEL_FILE_PATH = os.path.join(MD_DIR, "modelfiles", "bugg-os.Modelfile")
+BASE_MODEL = "deepseek-r1:1.5b"
+
+# ANSI Colors (Cyberpunk aesthetic)
+BLUE = "\033[38;5;75m"
+GOLD = "\033[38;5;214m"
+RED = "\033[38;5;196m"
+RESET = "\033[0m"
+BOLD = "\033[1m"
+
+def print_banner():
+    banner = rf"""
+{BLUE}  ____                       ___  ____  
+ | __ ) _   _  __ _  __ _   / _ \/ ___| 
+ |  _ \| | | |/ _` |/ _` | | | | \___ \ 
+ | |_) | |_| | (_| | (_| | | |_| |___) |
+ |____/ \__,_|\__, |\__, |  \___/|____/ 
+              |___/ |___/               
+{GOLD}   [ Context-Aware Local Intelligence ]
+{RESET}"""
+    print(banner)
+
+def sync_context():
+    print(f"{BLUE}[+]{RESET} Aggressively syncing minimal context...")
+    
+    # Absolute essentials
+    core_files = [
+        "master_ai_context.md",
+        "todo.md"
+    ]
+    
+    selected_files = []
+    
+    # 1. Add Core Files
+    for cf in core_files:
+        path = os.path.join(MD_DIR, cf)
+        if os.path.exists(path):
+            selected_files.append(path)
+
+    # 2. Add ONLY the MOST recent Report
+    reports = glob.glob(os.path.join(MD_DIR, "reports", "*.md"))
+    reports.sort(key=os.path.getmtime, reverse=True)
+    if reports:
+        selected_files.append(reports[0])
+
+    # 3. Add ONLY the MOST recent Weekly log
+    weekly = glob.glob(os.path.join(MD_DIR, "weekly", "*.md"))
+    weekly.sort(key=os.path.getmtime, reverse=True)
+    if weekly:
+        selected_files.append(weekly[0])
+
+    if not selected_files:
+        print(f"{RED}[!] No core markdown files found in {MD_DIR}{RESET}")
+        return False
+
+    context = ""
+    for md_file in selected_files:
+        rel_path = os.path.relpath(md_file, MD_DIR)
+        print(f"  {GOLD}>>{RESET} Loading {rel_path}...")
+        try:
+            with open(md_file, 'r', encoding='utf-8') as f:
+                context += f"\n--- {rel_path} ---\n"
+                context += f.read()
+        except Exception as e:
+            print(f"  {RED}!! Error reading {rel_path}: {e}{RESET}")
+
+    system_prompt = f"""
+You are Bugg-OS. Aesthetic: Cyberpunk. Tone: Analytical.
+Essential Context:
+{context}
+"""
+
+    # Escape triple quotes
+    system_prompt = system_prompt.replace('"""', '\\"\\"\\"')
+
+    modelfile_content = f"""
+FROM {BASE_MODEL}
+
+# System Prompt
+SYSTEM \"\"\"{system_prompt}\"\"\"
+
+# Aggressive optimization for T480 (CPU/RAM)
+PARAMETER num_ctx 4096
+PARAMETER temperature 0.6
+PARAMETER repeat_penalty 1.2
+"""
+    
+    os.makedirs(os.path.dirname(MODEL_FILE_PATH), exist_ok=True)
+    with open(MODEL_FILE_PATH, 'w', encoding='utf-8') as f:
+        f.write(modelfile_content)
+    
+    print(f"{BLUE}[+]{RESET} Creating Ollama model {BOLD}bugg-os{RESET}...")
+    try:
+        subprocess.run(["ollama", "create", "bugg-os", "-f", MODEL_FILE_PATH], check=True)
+        print(f"{GOLD}[✓]{RESET} Context synced successfully.")
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"{RED}[!] Failed to create Ollama model: {e}{RESET}")
+        return False
+
+def chat():
+    print_banner()
+    print(f"{BLUE}[i]{RESET} Initializing {BOLD}bugg-os{RESET} chat session...")
+    try:
+        subprocess.run(["ollama", "run", "bugg-os"])
+    except KeyboardInterrupt:
+        print(f"\n{RED}[!] Chat session terminated.{RESET}")
+    except Exception as e:
+        print(f"{RED}[!] Error launching chat: {e}{RESET}")
+
+def main():
+    if len(sys.argv) > 1:
+        cmd = sys.argv[1].lower()
+        if cmd == "sync":
+            sync_context()
+        elif cmd == "chat":
+            chat()
+        elif cmd == "help":
+            print(f"Usage: bugg-os [sync|chat|help]")
+            print("  sync - Refresh context from ~/ai_agent_md/")
+            print("  chat - Launch interactive chat (default)")
+        else:
+            print(f"{RED}[!] Unknown command: {cmd}{RESET}")
+            sys.exit(1)
+    else:
+        # Check if model exists and if sync is needed
+        try:
+            result = subprocess.run(["ollama", "list"], capture_output=True, text=True)
+            model_exists = "bugg-os" in result.stdout
+            
+            sync_needed = not model_exists
+            
+            if model_exists and os.path.exists(MODEL_FILE_PATH):
+                modelfile_mtime = os.path.getmtime(MODEL_FILE_PATH)
+                md_files = glob.glob(os.path.join(MD_DIR, "**", "*.md"), recursive=True)
+                for f in md_files:
+                    if os.path.getmtime(f) > modelfile_mtime:
+                        print(f"{BLUE}[i]{RESET} Context change detected. Auto-syncing...")
+                        sync_needed = True
+                        break
+            
+            if sync_needed:
+                if not sync_context():
+                    if not model_exists:
+                        sys.exit(1)
+            
+            chat()
+        except FileNotFoundError:
+            print(f"{RED}[!] 'ollama' command not found. Is Ollama installed?{RESET}")
+            sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

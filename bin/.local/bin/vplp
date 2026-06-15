@@ -1,0 +1,21 @@
+#!/bin/bash
+# vplp: PLP Course IDE Mode
+# Launches bvim with a vertical split terminal for any PLP language
+
+FILE=$1
+EXT="${FILE##*.}"
+
+case "$EXT" in
+    lisp|scm|cl) LANG="Lisp/Scheme" ;;
+    hs) LANG="Haskell" ;;
+    pl) LANG="Prolog" ;;
+    adb|ads) LANG="Ada" ;;
+    ml) LANG="OCaml" ;;
+    *) LANG="Generic" ;;
+esac
+
+if [ -z "$FILE" ]; then
+    nvim -c "vsplit | terminal"
+else
+    nvim "$FILE" -c "vsplit | terminal" -c "vertical resize 60" -c "wincmd h"
+fi

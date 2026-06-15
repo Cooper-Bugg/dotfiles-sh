@@ -1,0 +1,13 @@
+#!/bin/bash
+CHROME="$HOME/.thunderbird/izrhhews.default-release/chrome"
+
+case "$1" in
+  light) cp "$CHROME/userChrome-light.css" "$CHROME/userChrome.css" ;;
+  dark)  cp "$CHROME/userChrome-dark.css"  "$CHROME/userChrome.css" ;;
+  *) echo "Usage: tb-theme light|dark"; exit 1 ;;
+esac
+
+pkill -x thunderbird 2>/dev/null
+sleep 0.4
+thunderbird &
+notify-send "Thunderbird" "Switched to $1 mode" -t 2000
