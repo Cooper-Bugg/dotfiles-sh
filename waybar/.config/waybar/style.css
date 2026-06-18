@@ -130,6 +130,19 @@ window#waybar {
     border-left: 1px solid rgba(90, 159, 212, 0.2);
 }
 
+/* Opacity toggle */
+#custom-opacity {
+    padding: 0 10px;
+    color: #8090b0;
+    font-size: 13px;
+    border-left: 1px solid rgba(90, 159, 212, 0.2);
+}
+
+#custom-opacity.normal { color: #8090b0; }
+#custom-opacity.full   { color: #f0b429; } /* Gold when active */
+
+#custom-opacity:hover { color: #e0e8f0; }
+
 /* Theme toggle */
 #custom-theme {
     padding: 0 10px;

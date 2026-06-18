@@ -75,20 +75,48 @@ hl.config({
     }
 })
 
+-- --- THEME & OPACITY STATE RESOLUTION ---
+local theme_file = os.getenv("HOME") .. "/.local/share/theme-mode"
+local tf = io.open(theme_file, "r")
+local theme_mode = tf and tf:read("*all"):gsub("%s+", "") or "dark"
+if tf then tf:close() end
+
+local opacity_file = os.getenv("HOME") .. "/.local/share/opacity-mode"
+local of = io.open(opacity_file, "r")
+local opacity_mode = of and of:read("*all"):gsub("%s+", "") or "normal"
+if of then of:close() end
+
+local active_border = "rgba(5a9fd4ff)"
+local inactive_border = "rgba(2d3550a8)"
+if theme_mode == "light" then
+    active_border = "rgba(1a8cc4ff)"
+    inactive_border = "rgba(b0c0d8a8)"
+end
+
+local inactive_1_2 = "0.2"
+local inactive_3_9 = "0.6"
+local inactive_default = 0.4
+
+if opacity_mode == "100" then
+    inactive_1_2 = "1.0"
+    inactive_3_9 = "1.0"
+    inactive_default = 1.0
+end
+
 -- --- GENERAL APPEARANCE & STYLING ---
 hl.config({
     general = {
         gaps_in = 4,
         gaps_out = 4,
         border_size = 2,
-        ["col.active_border"] = "rgba(5a9fd4ff)",
-        ["col.inactive_border"] = "rgba(2d3550a8)",
+        ["col.active_border"] = active_border,
+        ["col.inactive_border"] = inactive_border,
         layout = "dwindle"
     },
     decoration = {
         rounding = 8,
         active_opacity = 1.0,
-        inactive_opacity = 0.4,
+        inactive_opacity = inactive_default,
         blur = {
             enabled = false
         },
@@ -109,17 +137,17 @@ hl.config({
         "opacity 1.0 override 1.0 override, class:^(code-oss)$",
         
         -- Inactive opacity rules for external monitor (Workspaces 1-2)
-        "opacity 1.0 0.2, workspace:1",
-        "opacity 1.0 0.2, workspace:2",
+        "opacity 1.0 " .. inactive_1_2 .. ", workspace:1",
+        "opacity 1.0 " .. inactive_1_2 .. ", workspace:2",
 
         -- Inactive opacity rules for laptop monitor (Workspaces 3-9)
-        "opacity 1.0 0.6, workspace:3",
-        "opacity 1.0 0.6, workspace:4",
-        "opacity 1.0 0.6, workspace:5",
-        "opacity 1.0 0.6, workspace:6",
-        "opacity 1.0 0.6, workspace:7",
-        "opacity 1.0 0.6, workspace:8",
-        "opacity 1.0 0.6, workspace:9"
+        "opacity 1.0 " .. inactive_3_9 .. ", workspace:3",
+        "opacity 1.0 " .. inactive_3_9 .. ", workspace:4",
+        "opacity 1.0 " .. inactive_3_9 .. ", workspace:5",
+        "opacity 1.0 " .. inactive_3_9 .. ", workspace:6",
+        "opacity 1.0 " .. inactive_3_9 .. ", workspace:7",
+        "opacity 1.0 " .. inactive_3_9 .. ", workspace:8",
+        "opacity 1.0 " .. inactive_3_9 .. ", workspace:9"
     }
 })
 

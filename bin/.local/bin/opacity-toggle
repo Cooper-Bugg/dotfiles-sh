@@ -1,0 +1,19 @@
+#!/bin/bash
+STATE_FILE="$HOME/.local/share/opacity-mode"
+MODE=$(cat "$STATE_FILE" 2>/dev/null || echo "normal")
+
+if [[ "$MODE" == "100" ]]; then
+    NEW_MODE="normal"
+else
+    NEW_MODE="100"
+fi
+
+echo "$NEW_MODE" > "$STATE_FILE"
+
+# Reload Hyprland configuration to apply new opacity rules
+hyprctl reload
+
+# Signal Waybar to refresh custom/opacity module (Real-time signal 4)
+pkill -RTMIN+4 waybar
+
+notify-send "Opacity Mode" "Switched to $NEW_MODE opacity" -t 2000

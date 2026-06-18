@@ -6,7 +6,7 @@
 
     "modules-left": ["custom/menu", "hyprland/workspaces"],
     "modules-center": ["custom/clock"],
-    "modules-right": ["custom/theme", "custom/wallpaper-lock", "custom/wallpaper-match", "battery", "backlight", "pulseaudio", "network", "bluetooth", "tray"],
+    "modules-right": ["custom/opacity", "custom/theme", "custom/wallpaper-lock", "custom/wallpaper-match", "battery", "backlight", "pulseaudio", "network", "bluetooth", "tray"],
 
     "custom/menu": {
         "format": "  󰣇  ",
@@ -68,6 +68,15 @@
         "format-connected": "󰂯 {device_alias}",
         "format-disabled": "󰂲",
         "on-click": "blueman-manager"
+    },
+
+    "custom/opacity": {
+        "exec": "~/.config/waybar/scripts/opacity_mode.sh",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 4,
+        "on-click": "~/.local/bin/opacity-toggle",
+        "tooltip": true
     },
 
     "custom/theme": {
