@@ -37,8 +37,10 @@ hl.workspace_rule({ workspace = "9", monitor = "eDP-1" })
 
 
 -- --- ENVIRONMENT VARIABLES ---
-hl.env("XCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("XCURSOR_SIZE", "48")
+hl.env("HYPRCURSOR_SIZE", "48")
+hl.env("XCURSOR_THEME", "oreo_red_cursors")
+hl.env("HYPRCURSOR_THEME", "oreo_red_cursors")
 hl.env("QT_QPA_PLATFORM", "wayland")
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 hl.env("MOZ_ENABLE_WAYLAND", "1")
