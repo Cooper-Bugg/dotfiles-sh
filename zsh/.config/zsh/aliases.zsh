@@ -1,8 +1,10 @@
-# Standard Unix tool aliases with color support
-alias ls='ls --color=auto'
-alias ll='ls -lah --color=auto'
-alias la='ls -A --color=auto'
-alias grep='grep --color=auto'
+# eza replaces ls
+alias ls='eza --icons'
+alias ll='eza -lh --icons --git'
+alias la='eza -lah --icons --git'
+alias tree='eza --tree --icons'
+alias tree-dirs='eza --tree --only-dirs --icons -I ".git|.cache|.npm|.gemini|.thunderbird|node_modules"'
+alias tree-all='eza --tree --icons -I ".git|.cache|.npm|.gemini|.thunderbird|node_modules"'
 
 # navigation
 alias ..='cd ..'
