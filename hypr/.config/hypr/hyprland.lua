@@ -111,7 +111,8 @@ hl.config({
         border_size = 2,
         ["col.active_border"] = active_border,
         ["col.inactive_border"] = inactive_border,
-        layout = "dwindle"
+        layout = "dwindle",
+        resize_on_border = true
     },
     decoration = {
         rounding = 8,
@@ -135,6 +136,26 @@ hl.config({
         "size 700 500, class:^(fastfetch-popup)$",
         "center, class:^(fastfetch-popup)$",
         "opacity 1.0 override 1.0 override, class:^(code-oss)$",
+        
+        -- Center and fit common dialogs/pickers onscreen
+        "float, title:^(Save File)$",
+        "center, title:^(Save File)$",
+        "float, title:^(Open File)$",
+        "center, title:^(Open File)$",
+        "float, title:^(Select a File)$",
+        "center, title:^(Select a File)$",
+        "float, title:^(Choose Files)$",
+        "center, title:^(Choose Files)$",
+        "float, title:^(Select Folder)$",
+        "center, title:^(Select Folder)$",
+        "float, title:^(File Upload)$",
+        "center, title:^(File Upload)$",
+        "float, class:^(xdg-desktop-portal-gtk)$",
+        "center, class:^(xdg-desktop-portal-gtk)$",
+        "float, class:^(org.gnome.NautilusPreviewer)$",
+        "center, class:^(org.gnome.NautilusPreviewer)$",
+        "float, class:^(org.kde.polkit-kde-authentication-agent-1)$",
+        "center, class:^(org.kde.polkit-kde-authentication-agent-1)$",
         
         -- Inactive opacity rules for external monitor (Workspaces 1-2)
         "opacity 1.0 " .. inactive_1_2 .. ", workspace:1",
@@ -167,6 +188,16 @@ hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainModShift .. " + M", hl.dsp.exit())
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
+
+-- Mouse Binds (SUPER + Left/Right click drag to move/resize floating windows)
+hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
+hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+
+-- Keyboard Window Resizing (SUPER + ALT + Vim Keys)
+hl.bind(mainMod .. " + ALT + H", hl.dsp.window.resize({ x = -20, y = 0, relative = true }))
+hl.bind(mainMod .. " + ALT + L", hl.dsp.window.resize({ x = 20, y = 0, relative = true }))
+hl.bind(mainMod .. " + ALT + K", hl.dsp.window.resize({ x = 0, y = -20, relative = true }))
+hl.bind(mainMod .. " + ALT + J", hl.dsp.window.resize({ x = 0, y = 20, relative = true }))
 
 -- Focus Navigation Controls (Vim Keys)
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "l" }))
@@ -211,10 +242,8 @@ hl.bind(mainModShift .. " + Escape", hl.dsp.exec_cmd("hyprlock"))
 -- Screenshots
 -- Print       → full screen, saved directly
 -- Super+Shift+Print → region select (grim + slurp)
--- Super+Shift+S     → region select (standard shortcut)
-hl.bind("Print", hl.dsp.exec_cmd("grim ~/media/images/screenshots/$(date +%Y%m%d-%H%M%S).png"))
-hl.bind(mainModShift .. " + Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" ~/media/images/screenshots/$(date +%Y%m%d-%H%M%S).png"))
-hl.bind(mainModShift .. " + S", hl.dsp.exec_cmd("grim -g \"$(slurp)\" ~/media/images/screenshots/$(date +%Y%m%d-%H%M%S).png"))
+hl.bind("Print", hl.dsp.exec_cmd("grim ~/media/images/screenshots/$(date +%Y%m%d-%H%M%S).png && notify-send 'Screenshot' 'Saved to screenshots folder'"))
+hl.bind(mainModShift .. " + Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" ~/media/images/screenshots/$(date +%Y%m%d-%H%M%S).png && notify-send 'Screenshot' 'Selected region saved to screenshots folder'"))
 hl.bind("Alt_R + Print", hl.dsp.exec_cmd("moondream-ask"))
 
 -- Global theme toggle (light/dark)
