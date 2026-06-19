@@ -1,17 +1,8 @@
-# eza replaces ls
-alias ls='eza --icons'
-alias ll='eza -lh --icons --git'
-alias la='eza -lah --icons --git'
-alias tree='eza --tree --icons'
-
-# bat replaces cat
-alias cat='bat'
-
-# fd replaces find
-alias find='fd'
-
-# ripgrep replaces grep
-alias grep='rg'
+# Standard Unix tool aliases with color support
+alias ls='ls --color=auto'
+alias ll='ls -lah --color=auto'
+alias la='ls -A --color=auto'
+alias grep='grep --color=auto'
 
 # navigation
 alias ..='cd ..'
@@ -41,3 +32,12 @@ alias yayin='yay -S'
 alias hyprconf='vim ~/.config/hypr/hyprland.lua'
 alias zshconf='vim ~/.config/zsh/.zshrc'
 alias aliasconf='vim ~/.config/zsh/aliases.zsh'
+
+# AI
+alias deepseek='~/.local/bin/bugg-os'
+alias deepseek-raw='ollama run deepseek-r1:1.5b'
+alias bugg-os='~/.local/bin/bugg-os'
+alias prime='ollama run agy-prime'
+alias tactician='ollama run command-r'
+
+
