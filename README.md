@@ -85,5 +85,3 @@ Some setups require manual configurations in system files (not managed by `stow`
 Ensure these are backed up to secure, private storage and never committed to GitHub:
 * **Secrets & Credentials**: Private keys (`~/.ssh/`), GPG keys (`~/.gnupg/`), passwords, and API tokens.
 * **Hardware Drivers**: Graphics drivers and firmware (e.g., audio/SOF firmware).
-* **Personal Data**: Everything in `~/school/`, `~/job_hunting/`, `~/media/`, `~/docs/`, and `~/src/`.
-
