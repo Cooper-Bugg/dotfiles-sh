@@ -57,12 +57,14 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("hypridle")
     hl.exec_cmd("sh -c 'sleep 1 && /home/cooper/.local/bin/apply-wallpaper.sh'")
     hl.exec_cmd("sh -c 'sleep 2 && ollama serve'")
+    hl.exec_cmd("brightnessctl --device='*::capslock' set 0")
 end)
 
 -- --- INPUT CONFIGURATION ---
 hl.config({
     input = {
         kb_layout = "us",
+        kb_options = "caps:escape",
         repeat_rate = 50,
         repeat_delay = 200,
         follow_mouse = 1,
