@@ -37,7 +37,7 @@ cooper@arch-thinkpad
 ## Install
 
 ```bash
-git clone https://github.com/Cooper-Bugg/dotfilesh.git ~/.dotfiles
+git clone https://github.com/Cooper-Bugg/dotfiles-sh.git ~/.dotfiles
 cd ~/.dotfiles
 ./install.sh   # requires stow
 ```
